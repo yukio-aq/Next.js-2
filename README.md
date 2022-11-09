@@ -1,34 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Next.jsのレンダリング方法<br>
+●CSR　クライアントサイドレンダリング<br>
+データフェッチやルーティングの全てがクライアント上で行われる。<br>
+React開発はこれに分類される。<br>
+Next.jsの場合、クライアント側でのみ行いたい場合はuseEffectで囲む。<br>
+<br>
+メリット<br>
+・静的なファイル配置のみで動く<br>
+・Node.jsの実行は必要ないのでサーバーの負荷が軽い<br>
+デメリット<br>
+・初期描画に時間がかかる<br>
+・クローラーによってはSEO的な問題が発生する<br>
+<br>
+●SSR　サーバーサイドレンダリング<br>
+サーバーにリクエストが来たタイミングで動的にHTMLを生成<br>
+外部APIへのデータの取得やコンポーネントのpropsの値を決定する処理を行い<br>
+HTMLを作成してクライアント側に返却する。<br>
+<br>
+メリット<br>
+・生成済みのHTMLが返ってくるのでSEOに強い<br>
+デメリット<br>
+・サーバー側で全て生成処理をするので負担が大きい<br>
+・クライアントにHTMLをクライアントに渡すまで時間がかかる<br>
+<br>
+●SG スタティックジェネレーション<br>
+ビルド時にデータフェッチやプロパティの値の決定を行いHTMLを生成する<br>
+リクエストが来たらサーバー側で構築することなく生成済みのHTMLを返す。<br>
+<br>
+メリット<br>
+・構築済みのため表示速度が速く、SEOも問題なし<br>
+デメリット<br>
+・更新頻度が高い動的コンテンツとの相性が悪い<br>
+<br>
+●ISR　インクリメンタル静的再生成<br>
+ビルド時にHTMLを構築するが、一定時間後にアクセスがあった場合、<br>
+生成済みのHTMLを返しつつサーバー側でHTMLを更新<br>
+次のアクセス時に最新のHTMLを渡す<br>
+<br>
+メリット<br>
+・SGを利用しながら動的コンテンツも更新される<br>
+デメリット<br>
+・サーバーの設定が少し手間がかかる<br>
+・基本はVercelを使う<br>
+<br>
+Next.jsの基本的なページはSGで作成し、動的に作成する必要がある場合はSSRを用いる
+<br>
